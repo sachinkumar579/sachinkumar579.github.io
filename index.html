@@ -1,13 +1,233 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sachin - Backend Engineer</title>
+<style>
+  :root{
+    --bg:#0d1117;
+    --panel:#11161d;
+    --line:#1f2730;
+    --text:#c9d1d9;
+    --muted:#7d8590;
+    --accent:#39c5cf;       /* cyan */
+    --accent-dim:#1d4d52;
+    --warn:#e3b341;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px}
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  .eyebrow{
+    font-family:var(--mono);
+    color:var(--accent);
+    font-size:.8rem;
+    letter-spacing:.08em;
+    margin-bottom:14px;
+  }
+  h2{font-size:1.7rem;margin-bottom:24px;font-weight:600}
+
+  /* ---- NAV ---- */
+  nav{
+    position:sticky;top:0;z-index:10;
+    background:rgba(13,17,23,.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px}
+  .brand{font-family:var(--mono);font-weight:700;color:var(--text)}
+  .brand .blink{color:var(--accent)}
+  nav ul{display:flex;gap:22px;list-style:none}
+  nav ul a{color:var(--muted);font-size:.92rem;font-family:var(--mono)}
+  nav ul a:hover{color:var(--accent);text-decoration:none}
+  @media(max-width:560px){nav ul{display:none}}
+
+  /* ---- HERO ---- */
+  .hero{padding:96px 0 80px}
+  .hero .prompt{font-family:var(--mono);color:var(--muted);font-size:.95rem;margin-bottom:18px}
+  .hero .prompt::before{content:"$ ";color:var(--accent)}
+  .hero h1{font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.1;font-weight:700;letter-spacing:-.02em}
+  .hero h1 .accent{color:var(--accent)}
+  .hero p.lead{margin-top:20px;font-size:1.15rem;color:var(--muted);max-width:620px}
+  .cursor{display:inline-block;width:10px;height:1.1em;background:var(--accent);vertical-align:-2px;margin-left:2px;animation:blink 1.1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .hero .cta{margin-top:32px;display:flex;gap:14px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);font-size:.9rem;
+    padding:11px 20px;border-radius:6px;
+    border:1px solid var(--accent-dim);
+    background:transparent;color:var(--accent);
+    transition:.18s;
+  }
+  .btn:hover{background:var(--accent-dim);text-decoration:none}
+  .btn.solid{background:var(--accent);color:#0622240;border-color:var(--accent);color:#021014}
+  .btn.solid:hover{opacity:.88}
+
+  /* ---- ABOUT ---- */
+  .about p{color:var(--muted);max-width:680px;margin-bottom:14px}
+  .about strong{color:var(--text);font-weight:600}
+
+  /* ---- PROJECTS ---- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px;
+    transition:.18s;
+  }
+  .card:hover{border-color:var(--accent-dim);transform:translateY(-3px)}
+  .card h3{font-size:1.1rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .card h3 .ico{color:var(--accent);font-family:var(--mono)}
+  .card p{color:var(--muted);font-size:.95rem;margin-bottom:16px}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+  .tag{font-family:var(--mono);font-size:.72rem;color:var(--accent);border:1px solid var(--accent-dim);padding:2px 8px;border-radius:20px}
+  .card .links{font-family:var(--mono);font-size:.85rem}
+
+  /* ---- SKILLS ---- */
+  .skillgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+  .skillgroup h4{font-family:var(--mono);color:var(--accent);font-size:.85rem;margin-bottom:12px;letter-spacing:.05em}
+  .skillgroup ul{list-style:none}
+  .skillgroup li{color:var(--muted);font-size:.95rem;padding:3px 0}
+  .skillgroup li::before{content:"› ";color:var(--accent)}
+
+  /* ---- CONTACT ---- */
+  .contact p{color:var(--muted);max-width:560px;margin-bottom:24px}
+  .links-row{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:.95rem}
+
+  footer{padding:32px 0;text-align:center;color:var(--muted);font-family:var(--mono);font-size:.82rem}
+
+  @media(prefers-reduced-motion:reduce){
+    .cursor{animation:none}
+    .card:hover{transform:none}
+    html{scroll-behavior:auto}
+  }
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+</style>
 </head>
 <body>
-  <h1>Hello, it works!</h1>
-  <p>This is my GitHub Pages site.</p>
+
+<nav>
+  <div class="wrap">
+    <span class="brand">~/sachin<span class="blink">_</span></span>
+    <ul>
+      <li><a href="#about">about</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <p class="prompt">whoami</p>
+    <h1>Sachin Kumar<span class="cursor"></span></h1>
+    <p class="lead">Backend engineer building distributed notification platforms and automation agents across Java and JavaScript microservices.</p>
+    <div class="cta">
+      <a href="#projects" class="btn solid">View projects</a>
+      <a href="https://github.com/sachinkumar579" class="btn">GitHub</a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="about">
+  <div class="wrap">
+    <p class="eyebrow">// about</p>
+    <h2>About me</h2>
+    <p>I'm a backend engineer focused on <strong>microservice architectures</strong> and developer tooling. With <strong>12+ years of experience</strong>, I've spent recent years building backend systems and working across a range of technologies, while diving deep into distributed architecture and performance optimization.</p>
+    <p>Lately I've been diving into <strong>AI</strong> — reading about how these systems work, exploring what they can do, and getting hands-on by building things with Claude. I like learning by doing, turning curiosity into small projects, and figuring out how good tooling can quietly make everyday work easier.</p>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="projects">
+  <div class="wrap">
+    <p class="eyebrow">// projects</p>
+    <h2>Selected work</h2>
+    <div class="cards">
+
+      <article class="card">
+        <h3><span class="ico">▸</span> Security Patching Agent</h3>
+        <p>An engine that ingests a defect link, extracts the vulnerable dependency and version, finds a safe release, updates POM files across services, and runs the test suite.</p>
+        <div class="tags">
+          <span class="tag">Java</span><span class="tag">Maven</span><span class="tag">Automation</span>
+        </div>
+        <div class="links"><a href="https://github.com/sachinkumar579/security-patch-agent">repo →</a></div>
+      </article>
+
+      <article class="card">
+        <h3><span class="ico">▸</span> Notification Platform</h3>
+        <p>Microservice-based notification delivery system handling multi-channel messaging at scale across 20+ services.</p>
+        <div class="tags">
+          <span class="tag">Microservices</span><span class="tag">Java</span><span class="tag">JS</span>
+        </div>
+        <div class="links"><a href="#">repo →</a></div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills">
+  <div class="wrap">
+    <p class="eyebrow">// skills</p>
+    <h2>What I work with</h2>
+    <div class="skillgrid">
+      <div class="skillgroup">
+        <h4>Languages</h4>
+        <ul><li>Java</li><li>JavaScript</li><li>SQL</li></ul>
+      </div>
+      <div class="skillgroup">
+        <h4>Backend</h4>
+        <ul><li>Microservices</li><li>REST APIs</li><li>Spring</li></ul>
+      </div>
+      <div class="skillgroup">
+        <h4>Tooling</h4>
+        <ul><li>Maven</li><li>Git</li><li>CI/CD</li><li>Nexus</li></ul>
+      </div>
+      <div class="skillgroup">
+        <h4>Other</h4>
+        <ul><li>Automation agents</li><li>Azure</li><li>Copilot</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <p class="eyebrow">// contact</p>
+    <h2>Get in touch</h2>
+    <p>Open to interesting backend and automation problems. The fastest way to reach me is email or LinkedIn.</p>
+    <div class="links-row">
+      <a href="mailto:ssachin579@gmail.com">email →</a>
+      <a href="https://github.com/sachinkumar579">github →</a>
+      <a href="https://linkedin.com/in/sachuration">linkedin →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    built &amp; deployed via GitHub Pages · © 2026 Sachin
+  </div>
+</footer>
+
 </body>
 </html>
